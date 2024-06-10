@@ -36,23 +36,22 @@ yum install tar wget -y
 wget http://download.sonatype.com/nexus/3/nexus-3.69.0-02-unix.tar.gz
 tar -zxvf nexus-3.69.0-02-unix.tar.gz
 mv nexus-3.69.0-02 nexus
+
+5. Remove the nexus-3.69.0-02-unix.tar.gz repo
 rm -rf nexus-3.69.0-02-unix.tar.gz
 
-5. Create a new user "nexus" 
+6. Create a new user "nexus" 
 sudo adduser nexus
 
-6. Give the sudo access to nexus user
+7. Give the sudo access to nexus user
 visudo
 nexus ALL=(ALL) NOPASSWD: ALL
 
-7. Change the permission for nexus-3
+8. Change the owner and group permissions to nexus and sonatype-work directories.
 chown -R nexus:nexus nexus
-
-8. Change the owner and group permissions to /opt/nexus and /opt/sonatype-work directories.
-chown -R nexus:nexus /opt/nexus
-chown -R nexus:nexus /opt/sonatype-work
-chmod -R 775 /opt/nexus
-chmod -R 775 /opt/sonatype-work
+chown -R nexus:nexus sonatype-work
+chmod -R 775 nexus
+chmod -R 775 sonatype-work
 
 9. Open /opt/nexus/bin/nexus.rc file and  uncomment run_as_user parameter and set as nexus user.
 vi /opt/nexus/bin/nexus.rc
@@ -86,6 +85,12 @@ b)Make sure you are trying to start nexus service with nexus user.
 c)Check java is installed or not using java -version command. (Specific Version too)
 d)Check the nexus.log file which is availabe in  /opt/sonatype-work/nexus/log  directory.
 
+e) [nexus@ip-10-10-1-101 ~]$ sudo systemctl start nexus
+Failed to start nexus.service: Unit nexus.service not found.
+
+sudo systemctl daemon-reload
+
+
 Unable to access nexus URL?
 -------------------------------------
 Make sure port 8081 is opened in security groups in AWS EC2 Instance.
@@ -108,5 +113,3 @@ sudo rm /etc/systemd/system/nexus.service
 
 5. Verify Removal
 sudo systemctl list-units | grep nexus
-
-
