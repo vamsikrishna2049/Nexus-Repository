@@ -1,0 +1,90 @@
+pre-requisite (Java min version 1.8 and max version 11)
+--------------------------------------------------------
+
+Java Installation
+-------------------
+Install java (Java Development Kit (JDK)-> Java Runtime Environment (JRE) and Java Virtual Machine (JVM))
+1.8V  java-1.8.0-amazon-corretto-devel.x86_64
+11 V  java-11-amazon-corretto-devel.x86_64
+
+Ex: If you want to install java 1.8v then 
+    sudo yum install -y java-1.8.0-amazon-corretto-devel
+
+Checking the java version
+java -version
+
+Set an environment variable
+---------------------------
+find /usr/lib/jvm/ -name java
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/
+echo $JAVA_HOME
+
+------------------------------------------------------------------------------------------------------------
+Nexus Repo Download
+-------------------
+
+1. Switch to SUDO USER
+sudo su -
+
+2. Go to optional folder (Installation of software packages that are not part of the operating system's core distribution, Due to this we're installing at /opt )
+cd /opt
+
+3. Install tar, wget packages
+yum install tar wget -y
+
+4. Download Nexus repo
+wget http://download.sonatype.com/nexus/3/nexus-3.69.0-02-unix.tar.gz
+tar -zxvf nexus-3.69.0-02-unix.tar.gz
+mv nexus-3.69.0-02 nexus
+
+5. Create a new user "nexus" 
+sudo adduser nexus
+
+6. Give the sudo access to nexus user
+visudo
+nexus ALL=(ALL) NOPASSWD: ALL
+
+7. Change the permission for nexus-3
+chown -R nexus:nexus nexus
+
+8. Change the owner and group permissions to /opt/nexus and /opt/sonatype-work directories.
+chown -R nexus:nexus /opt/nexus
+chown -R nexus:nexus /opt/sonatype-work
+chmod -R 775 /opt/nexus
+chmod -R 775 /opt/sonatype-work
+
+9. Open /opt/nexus/bin/nexus.rc file and  uncomment run_as_user parameter and set as nexus user.
+vi /opt/nexus/bin/nexus.rc
+run_as_user="nexus"
+
+10. Create nexus as a service
+ln -s /opt/nexus/bin/nexus /etc/init.d/nexus
+
+11. Switch as a nexus user and start the nexus service as follows.
+sudo su - nexus
+
+12. Start the nexus service
+sudo systemctl start nexus
+
+13. Enable the nexus services
+sudo systemctl enable nexus
+
+14. Check the port number in which nexus repo is working
+netstat -nltp
+
+15. Access the Nexus server from Laptop/Desktop browser.
+http://IPAddess/Hostname:8081/
+
+
+Troubleshooting
+---------------
+Nexus service is not starting?
+
+a)Make sure need to change the ownership and group to /opt/nexus and /opt/sonatype-work directories and permissions (775) for nexus user.
+b)Make sure you are trying to start nexus service with nexus user.
+c)Check java is installed or not using java -version command. (Specific Version too)
+d)Check the nexus.log file which is availabe in  /opt/sonatype-work/nexus/log  directory.
+
+Unable to access nexus URL?
+-------------------------------------
+Make sure port 8081 is opened in security groups in AWS EC2 Instance.
