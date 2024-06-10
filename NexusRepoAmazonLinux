@@ -36,6 +36,7 @@ yum install tar wget -y
 wget http://download.sonatype.com/nexus/3/nexus-3.69.0-02-unix.tar.gz
 tar -zxvf nexus-3.69.0-02-unix.tar.gz
 mv nexus-3.69.0-02 nexus
+rm -rf nexus-3.69.0-02-unix.tar.gz
 
 5. Create a new user "nexus" 
 sudo adduser nexus
