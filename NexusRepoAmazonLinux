@@ -88,3 +88,24 @@ d)Check the nexus.log file which is availabe in  /opt/sonatype-work/nexus/log  d
 Unable to access nexus URL?
 -------------------------------------
 Make sure port 8081 is opened in security groups in AWS EC2 Instance.
+
+
+Uninstall the Nexus
+-------------------
+1. Stop the Nexus Service
+sudo systemctl stop nexus
+
+2. Checking the Nexus Service
+sudo systemctl status nexus
+
+3. Remove all the nexus packages in all locations
+sudo rm -rf /opt/nexus*
+sudo rm -rf /opt/sonatype* 
+
+4. Remove Service Configuration
+sudo rm /etc/systemd/system/nexus.service
+
+5. Verify Removal
+sudo systemctl list-units | grep nexus
+
+
