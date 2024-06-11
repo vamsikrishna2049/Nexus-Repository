@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Check current Java version
+if java -version 2>&1 | grep -q "1.8"; then
+  echo "Java 1.8 or compatible version is already installed."
+else
+  # Optional prompt for confirmation (uncomment to enable)
+  # read -p "Java 1.8 is not detected. Install Java 1.8? (y/N) " response
+  # if [[ "$response" =~ ^[Yy]$ ]]; then
+
+  # Install Java 1.8 using yum (modify for other package managers)
+  sudo yum install -y java-1.8.0-amazon-corretto-devel
+
+  # Verify installation
+  if [[ $(find /usr/lib/jvm/ -name java | grep -q java-1.8.0-amazon-corretto.x86_64 &> /dev/null; echo $?) -eq 0 ]]; then
+    echo "Java 1.8 successfully installed."
+
+    # Set JAVA_HOME only if installation is successful
+    export JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/
+    echo "JAVA_HOME set to: $JAVA_HOME"
+  else
+    echo "Error: Java 1.8 installation failed."
+  fi
+fi
