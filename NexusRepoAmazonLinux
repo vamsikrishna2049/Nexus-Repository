@@ -63,19 +63,22 @@ ln -s /opt/nexus/bin/nexus /etc/init.d/nexus
 11. Switch as a nexus user and start the nexus service as follows.
 sudo su - nexus
 
-12. Enable the nexus services
+12. Running Repository Manager in the Background (start, stop, restart, force-reload and status)
+./nexus start
+
+13. Enable the nexus services
 sudo systemctl enable nexus
 
-13. Start the nexus service
+14. Start the nexus service
 sudo systemctl start nexus
 
-14. Status the nexus service
+15. Status the nexus service
 sudo systemctl status nexus
 
-15. Check the port number in which nexus repo is working
+16. Check the port number in which nexus repo is working
 netstat -nltp
 
-16. Access the Nexus server from Laptop/Desktop browser.
+17. Access the Nexus server from Laptop/Desktop browser.
 http://IPAddess/Hostname:8081/
 
 
